@@ -10,17 +10,17 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class program {
     public static void main(String[] args) {
-        String polynomial = "";
+        String polynom = "";
         int k = Power_k(); // Вводим степень k.
         int[] array_coeffs = Coeffs(k); // Получаем массив с случайными коэффициентами.
         for (int i = k; i > 0; i--) { // Собираем строку с многочленом.
-            polynomial = polynomial + Elements(array_coeffs[k-i], i); // Метод Elements выдает готовые элементы многочлена.
-            if (Elements(array_coeffs[k-i], i) != "") polynomial = polynomial + " + ";
+            polynom = polynom + Elements(array_coeffs[k-i], i); // Метод Elements выдает готовые элементы многочлена.
+            if (Elements(array_coeffs[k-i], i) != "") polynom = polynom + " + ";
         }
-        if (array_coeffs[k] == 0) polynomial = polynomial.substring(0, -1);
-        else polynomial = polynomial + array_coeffs[k]; // Добавляем последний элемент.
-        polynomial = polynomial + " = 0"; // Дописываем окончание многочлена.
-        System.out.println(polynomial);
+        if (array_coeffs[k] == 0) polynom = polynom.substring(0, -1);
+        else polynom = polynom + array_coeffs[k]; // Добавляем последний элемент.
+        polynom = polynom + " = 0"; // Дописываем окончание многочлена.
+        System.out.println(polynom);
     }
 
     static int Power_k() {
