@@ -12,12 +12,17 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class program {
     public static void main(String[] args) {
+        String polynomial = "";
         int k = Power_k(); // Вводим степень k.
         int[] array_coeffs = Coeffs(k); // Получаем случайные коэффициенты.
-        for (int el : array_coeffs) {
-            System.out.println(el);
+        for (int i = k; i > 0; i--) { // Собираем строку с многочленом.
+            polynomial = polynomial + Elements(array_coeffs[k-i], i);
+            if (Elements(array_coeffs[k-i], i) != "") polynomial = polynomial + " + ";
         }
-        
+        if (array_coeffs[k] == 0) polynomial = polynomial.substring(0, -1);
+        else polynomial = polynomial + array_coeffs[k];
+        polynomial = polynomial + " = 0";
+        System.out.println(polynomial);
     }
 
     static int Power_k() {
@@ -33,10 +38,23 @@ public class program {
     }
 
     static int[] Coeffs(int k) {
-        int[] arr = new int[k];
-        for (int i = 0; i < k; i++) {
+        int[] arr = new int[k+1];
+        for (int i = 0; i <= k; i++) {
             arr[i] = ThreadLocalRandom.current().nextInt(0, 101);
         }
         return arr;
+    }
+
+    static String Elements(int coef, int power) {
+        String result = "";
+        if (coef >= 2 & power >= 2) {
+            result = String.format("%d*x^%d", coef, power);
+        }
+        else if (coef == 1 & power >= 2) result = String.format("x^%d", power);
+        else if (coef == 1 & power == 1) result = "x";
+        else if (power == 1 & coef >=2) result = String.format("%d*x", coef);
+        else if (power == 0 & coef >= 1) result = String.format("%d", coef);
+        else if (coef == 0) result = "";
+        return result;
     }
 }
