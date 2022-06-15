@@ -14,21 +14,21 @@ public class program1 {
         // Условия остановки вычисления.
         if (a == 0 && b == 0) System.out.println("Результат неопределен.");
 
-        else if (b == 0) System.out.println("Результат: 1");
-
         // Возведение в степень.
         else System.out.printf("Результат: %f", Pow_method(a, b));
     }
 
     static double Pow_method(int x, int y) {
-        double result = x;
+        double xx = x; // Иначе не считает отрицательные степени.
         if (y < 0) {
             y = -y;
-            x = 1/x;
+            xx = 1/xx;
         }
-        do {
-            if (y%2 == 0) result = result * result; 
-            else result = result * result * x;
+        double result = xx;
+        if (xx == 1 || y == 0) result = 1;
+        else do {
+            if (y % 2 == 0) result = result * result; 
+            else result = result * result * xx;
             y = y / 2;
         } while (y > 1);
         return result;
