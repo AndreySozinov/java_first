@@ -2,7 +2,7 @@ package task02;
 
 import java.util.Scanner;
 
-public class program {
+public class program2 {
     public static void main(String[] args) {
         // Ввод данных.
         Scanner iScanner = new Scanner(System.in);

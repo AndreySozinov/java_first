@@ -4,7 +4,7 @@
 
 package task05;
 
-public class program {
+public class program5 {
     public static void main(String[] args) {
         String q = "2?";
         String w = "?5";

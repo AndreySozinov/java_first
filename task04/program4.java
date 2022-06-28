@@ -4,7 +4,7 @@ package task04;
 
 import java.util.Scanner;
 
-public class program {
+public class program4 {
     public static void main(String[] args) {
         // Ввод данных.
         Scanner iScanner = new Scanner(System.in);
