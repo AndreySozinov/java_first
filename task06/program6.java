@@ -21,15 +21,15 @@ public class program6 {
             rawArray[i] = (int) (Math.random() * (max - min + 1)) + min;
         }
         
-        TestSorting(ArrayMerging(rawArray));
+        TestSorting(MergeSort(rawArray));
         //System.out.println(Arrays.toString(rawArray));
         //System.out.println(Arrays.toString(ArrayMerging(rawArray)));
     }
 
-    static int[] ArrayMerging (int[] arr) {
+    static int[] MergeSort (int[] arr) {
         if (arr.length <= 1) {return arr;}
-        int[] left = ArrayMerging(Arrays.copyOfRange(arr, 0, arr.length/2));
-        int[] right = ArrayMerging(Arrays.copyOfRange(arr, arr.length/2, arr.length));
+        int[] left = MergeSort(Arrays.copyOfRange(arr, 0, arr.length/2));
+        int[] right = MergeSort(Arrays.copyOfRange(arr, arr.length/2, arr.length));
         int i = 0;
         int j = 0;
         int index = 0;
