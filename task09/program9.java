@@ -21,15 +21,14 @@ public class program9 {
         }
         System.out.println(Arrays.toString(rawArray));
 
-        // Построение бинарного дерева и вывод на экран.
+        // Построение бинарного дерева.
         int start = rawArray.length / 2 - 1;
         while (start >= 0) {
             HeapBuilding(rawArray, start, rawArray.length);
             start--;
         }
-        System.out.println(Arrays.toString(rawArray));
 
-        // Сортировка массива.
+        // Сортировка массива и вывод на экран.
         System.out.println(Arrays.toString(HeapSorting(rawArray, rawArray.length)));
     }
 
@@ -39,8 +38,7 @@ public class program9 {
         int max = 0;
         if (child1 >= arrayLength) {return arr;}
         if (child2 < arrayLength) {
-            if (arr[child1] > arr[child2]) {max = child1;}
-            else {max = child2;}
+            max = arr[child1] > arr[child2] ? child1 : child2;
             if (arr[parent] < arr[max]) {
                 Swap(arr, parent, max);
                 HeapBuilding(arr, max, arrayLength);
