@@ -1,52 +1,36 @@
 package task07;
-//На шахматной доске расставить 8 ферзей так, чтобы они не били друг друга.
+// На шахматной доске расставить 8 ферзей так, чтобы они не били друг друга.
 public class program7 {
     public static void main(String[] args) {
         int[][] chessboard = new int[8][8];
-        Printing(chessboard);
+ 
+        Eight_queens(chessboard, 0);
     }
 
-    static void Eight_queens (int[][] arr, int k) {
-        if (k == 8) {
+    static void Eight_queens (int[][] arr, int x) {
+        if (x == 8) {
             Printing(arr);
             return;}
-        int x = (int) (Math.random() * (arr.length));
-        int y = (int) (Math.random() * (arr[0].length));
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i][y] == 1 || arr[x][i] == 1) {return;}
+            
+        for (int y = 0; y < 8; y++) {
+        // Ищем уже поставленные ферзи.
+        int sum = Checking(arr, x, y);
+            
+        // Если горизонталь, вертикаль и обе диагонали не заняты - ставим ферзя.
+        if (sum == 0) {
+            arr[x][y] = 1;
+            Eight_queens(arr, x + 1);
+            }
         }
-        int a = x;
-        int b = y;
-        while (a >= 0 || b >= 0) {
-            if (arr[a][b] == 1) {return;}
-            a-=1;
-            b-=1;
+        // Если поставить некуда, убираем ферзя с предыдущей горизонтали.
+        if (x > 0) {
+            for (int y = 0; y < 8; y++) {
+                arr[x-1][y] = 0;
+            }
         }
-        a = x;
-        b = y;
-        while (a >= 0 || b < arr.length) {
-            if (arr[a][b] == 1) {return;}
-            a-=1;
-            b+=1;
-        }
-        a = x;
-        b = y;
-        while (a < arr.length || b < arr.length) {
-            if (arr[a][b] == 1) {return;}
-            a+=1;
-            b+=1;
-        }
-        a = x;
-        b = y;
-        while (a < arr.length || b >= 0) {
-            if (arr[a][b] == 1) {return;}
-            a+=1;
-            b-=1;
-        }
-        arr[x][y] = 1;
-        Eight_queens(arr, k + 1);
         return;
     }
+
     static void Printing (int[][] arr) {
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[i].length; j++) {
@@ -54,5 +38,44 @@ public class program7 {
             }
         System.out.println();
         }
+    }
+
+    static int Checking(int[][] arr, int x, int y) {
+        int result = 0;
+            for (int i = 0; i < arr.length; i++) {
+                // Пробегаем по горизонтали и вертикали.
+                result += arr[x][i];
+                result += arr[i][y];
+            }
+            // Пробегаем по диагоналям.
+            int i = x;
+            int j = y;
+            while (i >= 0 && j >= 0) {
+                result += arr[i][j];
+                i-=1;
+                j-=1;
+            }
+            i = x;
+            j = y;
+            while (i >= 0 && j < arr.length) {
+                result += arr[i][j];
+                i-=1;
+                j+=1;
+            }
+            i = x;
+            j = y;
+            while (i < arr.length && j < arr.length) {
+                result += arr[i][j];
+                i+=1;
+                j+=1;
+            }
+            i = x;
+            j = y;
+            while (i < arr.length && j >= 0) {
+                result += arr[i][j];
+                i+=1;
+                j-=1;
+            }
+        return result;
     }
 }
