@@ -1,10 +1,21 @@
 package task07;
+
 // На шахматной доске расставить 8 ферзей так, чтобы они не били друг друга.
 public class program7 {
     public static void main(String[] args) {
         int[][] chessboard = new int[8][8];
- 
-        Eight_queens(chessboard, 0);
+        
+        // Ищем решения для любого расположения ферзя в первой горизонтали.
+        for (int y = 0; y < 8; y++) {
+            chessboard[0][y] = 1;
+            Eight_queens(chessboard, 1);
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    chessboard[i][j] = 0;
+                }
+            }
+        System.out.println();
+        }
     }
 
     static void Eight_queens (int[][] arr, int x) {
