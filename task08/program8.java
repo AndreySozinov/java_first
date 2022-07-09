@@ -4,7 +4,7 @@ package task08;
 
 public class program8 {
     public static void main(String[] args) {
-        int[][] chessboard = new int[8][8];
+        int[][] chessboard = new int[5][5];
         int[][] moves = {{1, 2}, {2, 1}, {2, -1}, {1, -2}, 
                         {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
         
