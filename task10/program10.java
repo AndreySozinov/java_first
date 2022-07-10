@@ -1,63 +1,66 @@
 package task10;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Stack;
 
 // Реализовать алгоритм перевода из инфиксной записи в постфиксную 
 // для арифметического выражения.
 // Вычислить запись если это возможно.
 public class program10 {
     public static void main(String[] args) {
-        String infix_expression = "25+9*5.0/10-4";
-        String postfix_expression = "";
+        String infix_expression = "(25+9)*10-8^2/5";
 
-        LinkedList<String> elements = GetElements(infix_expression);
-        postfix_expression = Translate(elements);
-        System.out.println(postfix_expression);
+        System.out.println(Translate(GetElements(infix_expression)));
     }
 
     // Переводим строки чисел и операций в постфиксную запись с учетом приоритета.
-    static String Translate(LinkedList<String> enter) {
-        String result = "";
-        StringBuilder numbers = new StringBuilder();
-        StringBuilder operations = new StringBuilder();
-        int position = -1;
-        while (enter.contains("^")) {
-            position = enter.indexOf("^");
-            Replace(position, enter, numbers, operations);
+    static StringBuilder Translate(LinkedList<String> enter) {
+        StringBuilder result = new StringBuilder();
+        Stack<String> st = new Stack<>();
+
+        Map<String, Integer> priors = new HashMap<>();
+        priors.put("+", 1);
+        priors.put("-", 1);
+        priors.put("*", 2);
+        priors.put("/", 2);
+        priors.put("^", 3);
+
+        Map<String, String> brackets = new HashMap<>();
+        brackets.put(")", "(");
+        brackets.put("]", "[");
+        brackets.put("}", "{");
+        brackets.put(">", "<");
+
+        String functions = "sincostanasinacosatansqrtexplog";
+
+        for (String item : enter) { // Пока не кончится входной список
+            if (isNumeric(item) || item.equals("!")) { // Если элемент это число или ! кладем в выходную строку.
+                result = result.append(item + " ");
+            }
+            if (functions.contains(item)) { // Если элемент - функция кладём в стек.
+                    st.push(item);
+            }
+            if (brackets.containsValue(item)) { // Если элемент открывающая скобка кладём в стек.
+                st.push(item);
+            }
+            if (brackets.containsKey(item)) { // Если элемент закрывающая скобка из стека выталкиваем в выходную строку до открывающей скобки.
+                while (!brackets.get(item).equals(st.peek())) {
+                    result = result.append(st.pop() + " ");
+                }
+                st.pop(); // Открывающую скобку в выходную строку не кладем.
+            }
+            if (priors.containsKey(item)) { // Если элемент ^ * / + или - выталкиваем функции и более приоритетные операции из стека в выходную строку.
+                while (!st.empty() && priors.containsKey(st.peek()) && (functions.contains(st.peek()) || priors.get(item) <= priors.get(st.peek()))) {
+                    result = result.append(st.pop() + " ");
+                }
+                st.push(item); // После чего помещаем операцию в стек.
+            }
         }
-        while (enter.contains("*") || enter.contains("/")) {
-            if (enter.contains("*") && enter.contains("/")) {
-                position = enter.indexOf("*") < enter.indexOf("/")? 
-                            enter.indexOf("*") : enter.indexOf("/"); 
-                Replace(position, enter, numbers, operations);
-            }
-            else if (enter.contains("*")) {
-                position = enter.indexOf("*");
-                Replace(position, enter, numbers, operations);
-            }
-            else {
-                position = enter.indexOf("/");
-                Replace(position, enter, numbers, operations);
-            }
+        while (!st.empty()) {
+            result = result.append(st.pop() + " ");
         }
-        while (enter.contains("+") || enter.contains("-")) {
-            if (enter.contains("+") && enter.contains("-")) {
-                position = enter.indexOf("+") < enter.indexOf("-")? 
-                            enter.indexOf("+") : enter.indexOf("-"); 
-                Replace(position, enter, numbers, operations);
-            }
-            else if (enter.contains("+")) {
-                position = enter.indexOf("+");
-                Replace(position, enter, numbers, operations);
-            }
-            else {
-                position = enter.indexOf("-");
-                Replace(position, enter, numbers, operations);
-            }
-        }
-        result = result.concat(numbers.toString());
-        result = result.concat(operations.toString());
-        result = result.replace(" 0", "");
         return result;
     }
 
@@ -79,20 +82,14 @@ public class program10 {
                 }
             }
         }
-        result.add(source.substring(start));
+        if (start < source.length()) {
+            result.add(source.substring(start));
+        }
         return result;
     }
 
-    // Раскидываем список с числами и знаками на строчку чисел и строчку знаков.
-    static void Replace(int pos, LinkedList<String> source, StringBuilder nums, StringBuilder signs) {
-        nums.append(source.get(pos-1));
-        nums.append(" ");
-        nums.append(source.get(pos + 1));
-        nums.append(" ");
-        signs.append(source.get(pos));
-        signs.append(" ");
-        source.set(pos - 1, "0");
-        source.remove(pos);
-        source.remove(pos);
-    }
+    // Проверка на число с десятичной точкой и минусом.
+    static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");
+      }
 }
