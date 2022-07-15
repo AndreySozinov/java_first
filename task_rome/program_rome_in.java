@@ -3,7 +3,7 @@ package task_rome;
 import java.util.HashMap;
 import java.util.Map;
 
-public class program_rome {
+public class program_rome_in {
     public static void main(String[] args) {
         Map<Character, Integer> numbers = new HashMap<>();
         numbers.put('I', 1);
