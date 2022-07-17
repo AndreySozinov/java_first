@@ -15,7 +15,7 @@ public class program_rome_out {
         numbers.put(500, 'D');
         numbers.put(1000, 'M');
 
-        int arabic_number = 1949;
+        int arabic_number = 1949; // Вводим арабское число
 
         System.out.printf("%d = %s", arabic_number, getRoman(arabic_number));
     }
@@ -23,17 +23,17 @@ public class program_rome_out {
     static String getRoman(int arabic_number) {
         StringBuilder roman_number = new StringBuilder();
 
-        for (int i : numbers.descendingKeySet()) {
-            if (arabic_number / i > 0) {
+        for (int i : numbers.descendingKeySet()) { // Выстраиваем ключи в порядке убывания.
+            if (arabic_number / i > 0) { // Если число больше ключа
                 for (int j = 0; j < arabic_number / i; j++) {
-                    roman_number.append(numbers.get(i));
+                    roman_number.append(numbers.get(i)); // Добавляем ключ в строку столько раз, во сколько число больше ключа.
                 }
-                arabic_number = arabic_number % i;
+                arabic_number = arabic_number % i; // Берем остаток исходного числа.
             }
         }
         
         String number = roman_number.toString();
-        
+        // Заменяем в строке четверные повторения.
         number = number.replace("DCCCC", "CM");                
         number = number.replace("CCCC", "CD");        
         number = number.replace("LXXXX", "XC");        
