@@ -18,17 +18,21 @@ public class program11 {
         field[4][1] = -1; field[4][2] = -1; field[4][3] = -1; field[4][4] = -1;
         field[5][9] = -1; field[5][10] = -1; field[6][9] = -1; field[6][10] = -1;
 
-        Printing(field); // Печатаем исходное поле.
+        Printing(field); // Печатаем исходное поле, звездочки - непроходимые ячейки.
 
         int startX = 6; int startY = 3; // Стартовая точка.
         int finX = 0; int finY = 3; // Финишная точка.
 
         Wave (field, startX, startY, finX, finY); // Распространение волны.
-        Printing(field);
+        Printing(field); // Печатаем поле, цифры - номера шагов до цели.
+
+        Recovery(field, startX, startY, finX, finY); // Восстанавливаем путь до старта при помощи стека.
+        Path(way_x, way_y); // Заносим координаты шагов верного пути из стека на поле.
+        Printing(field); // Плюсиками отмечаем путь.
     }
 
     static void Printing (int[][] arr) {
-        String a = "---"; String b = "|";
+        String a = "---"; String b = "|"; String z = " ";
         for (int k = -1; k <= arr[0].length; k++) {
             System.out.printf("%s", a);
         }
@@ -36,7 +40,11 @@ public class program11 {
         for (int i = 0; i < arr.length; i++) {
             System.out.printf("%2s", b);
             for (int j = 0; j < arr[0].length; j++) {
-                System.out.printf("%3d", arr[i][j]);
+                if (arr[i][j] > 0) z = Integer.toString(arr[i][j]);
+                if (arr[i][j] == -1) z = "*";
+                if (arr[i][j] == -2) z = "+";
+                System.out.printf("%3s", z);
+                z = " ";
             }
             System.out.printf("%3s\n", b);
         }
@@ -76,14 +84,26 @@ public class program11 {
     }
 
     static void Recovery (int[][] arr, int stX, int stY, int finX, int finY) {
-        if (finX == stX && finY == stY) return;
         way_x.push(finX); way_y.push(finY);
+        if (finX == stX && finY == stY) return;
         for (int[] move : moves) {
             if (finX + move[0] >= 0 && finX + move[0] < arr.length &&
             finY + move[1] >= 0 && finY + move[1] < arr[0].length 
-            && arr[finX + move[0]][finY + move[1]] < arr[finX][finY]) {
+            && arr[finX + move[0]][finY + move[1]] < arr[finX][finY]
+            && arr[finX + move[0]][finY + move[1]] != -1) {
                 Recovery(arr, stX, stY, finX + move[0], finY + move[1]);
+                if ((way_x.peek() == stX && way_y.peek() == stY)) return;
             }
+        }
+        if ((way_x.peek() != stX && way_y.peek() != stY)) {
+            way_x.pop(); way_y.pop();
+        }
+        return;
+    }
+
+    static void Path (Stack<Integer> x, Stack<Integer> y) {
+        while (!x.empty()) {
+            field[x.pop()][y.pop()] = -2;
         }
     }
 }
