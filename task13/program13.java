@@ -1,29 +1,25 @@
-package task10;
+package task13;
+
 // Дописать код задания 13. 
 // Можно без функций типа sin/cos/log, сделать только для простых 
 // арифметических операций (+-*/), также можно добавить возведение в степень ^. 
-// Учитывать наличие скобок
+// Учитывать наличие скобок.
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Stack;
 
-// Реализовать алгоритм перевода из инфиксной записи в постфиксную 
-// для арифметического выражения.
-// Вычислить запись если это возможно.
-
-public class program10 {
+public class program13 {
     public static void main(String[] args) {
-        String infix_expression = "(52-8)*2^3+4";
+        String expression = "(52-8)*2^3+4";
 
-        StringBuilder postfix_expression = Translate(GetElements(infix_expression));
-
-        System.out.println(postfix_expression);
+        StringBuilder postfix_expression = Translate(GetElements(expression));
 
         Calculator(postfix_expression.toString());
     }
 
-    // Переводим список чисел и операций в постфиксную запись с учетом приоритета.
+    // Перевод в постфиксную запись с учетом приоритета.
     static StringBuilder Translate(LinkedList<String> enter) {
         StringBuilder result = new StringBuilder();
         Stack<String> st = new Stack<>();
@@ -116,7 +112,8 @@ public class program10 {
         return str.matches("-?\\d+(\\.\\d+)?");
       }
 
-    static void Calculator(String str) {
+    // Сам расчет.
+      static void Calculator(String str) {
         String[] items = str.split(" ");
         Stack<Double> stack = new Stack<>();
         double result = 0;
@@ -124,70 +121,54 @@ public class program10 {
             if (isNumeric(item)) {
                 stack.push(Double.parseDouble(item));
             } else {
-                result = 0;
                 switch (item) {
                     case "+":
                         result = stack.pop() + stack.pop();
-                        stack.push(result);
                         break;
                     case "-":
                         result = stack.pop();
                         result = stack.pop() - result;
-                        stack.push(result);
                         break;
                     case "*":
                         result = stack.pop() * stack.pop();
-                        stack.push(result);
                         break;
                     case "/":
                         result = stack.pop();
                         result = stack.pop() / result;
-                        stack.push(result);
                         break;
                     case "^":
                         result = stack.pop();
                         result = Math.pow(stack.pop(), result);
-                        stack.push(result);
                         break;
                     case "sin":
                         result = Math.sin(stack.pop());
-                        stack.push(result);
                         break;
                     case "cos":
                         result = Math.cos(stack.pop());
-                        stack.push(result);
                         break;
                     case "tan":
                         result = Math.tan(stack.pop());
-                        stack.push(result);
                         break;
                     case "asin":
                         result = Math.asin(stack.pop());
-                        stack.push(result);
                         break;
                     case "acos":
                         result = Math.acos(stack.pop());
-                        stack.push(result);
                         break;
                     case "atan":
                         result = Math.atan(stack.pop());
-                        stack.push(result);
                         break;
                     case "sqrt":
                         result = Math.sqrt(stack.pop());
-                        stack.push(result);
                         break;
                     case "exp":
                         result = Math.exp(stack.pop());
-                        stack.push(result);
                         break;
                     case "log":
                         result = Math.log(stack.pop());
-                        stack.push(result);
-                        break;
-                    default:
                         break;
                 }
+                stack.push(result);
             }
         }
         System.out.println(String.format("%.2f", stack.pop()));

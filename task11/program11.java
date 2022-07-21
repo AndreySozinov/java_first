@@ -1,5 +1,5 @@
 package task11;
-
+// Реализовать волновой алгоритм
 import java.util.Stack;
 
 public class program11 {
@@ -13,15 +13,15 @@ public class program11 {
     public static Stack<Integer> way_y = new Stack<>(); // Стек для координат ходов по Y.
     
     public static void main(String[] args) {
-        // Приписываем атрибут непроходимости ячеек.
+        // Приписываем атрибут непроходимости ячеек (можно любые координаты).
         field[0][2] = -1; field[1][2] = -1; field[3][8] = -1; field[3][9] = -1;
         field[4][1] = -1; field[4][2] = -1; field[4][3] = -1; field[4][4] = -1;
         field[5][9] = -1; field[5][10] = -1; field[6][9] = -1; field[6][10] = -1;
 
         Printing(field); // Печатаем исходное поле, звездочки - непроходимые ячейки.
 
-        int startX = 6; int startY = 3; // Стартовая точка.
-        int finX = 0; int finY = 3; // Финишная точка.
+        int startX = 6; int startY = 3; // Стартовая точка (любая проходимая).
+        int finX = 0; int finY = 3; // Финишная точка (любая проходимая).
 
         Wave (field, startX, startY, finX, finY); // Распространение волны.
         Printing(field); // Печатаем поле, цифры - номера шагов до цели.
